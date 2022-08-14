@@ -17,9 +17,9 @@ git add -A
 git commit -m 'deploy'
 
 # if you are deploying to https://<USERNAME>.github.io
-# git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git main
+git push -f git@github.com:nthbutsky/nthbutsky.github.io.git chief
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
-git push -f git@github.com:nthbutsky/maudau-memory-card-game.git chief:gh-pages
+# git push -f git@github.com:nthbutsky/maudau-memory-card-game.git chief:gh-pages
 
 cd -

@@ -23,9 +23,6 @@ import useFirebase from '@/api/firebase';
 import {
   useUserStore,
 } from '@/store/user';
-import {
-  router, ERouteName,
-} from '@/router';
 
 const {
   user,
@@ -38,8 +35,5 @@ const {
 
 function onLogout() {
   uiSignOut();
-  router.push({
-    name: ERouteName.LOGIN,
-  });
 }
 </script>

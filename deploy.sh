@@ -9,5 +9,5 @@ cd dist
 # echo 'www.example.com' > CNAME
 git add -A
 git commit -m 'deploy'
-git push -f dist origin gh-pages
+git push -f origin gh-pages
 cd -

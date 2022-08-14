@@ -3,17 +3,15 @@ import {
   createWebHistory,
 } from 'vue-router';
 import DefaultLayout from '@/layout/default/default.vue';
+import {
+  useUserStore,
+} from '@/store/user';
 
 export enum ERouteName {
-  HOME = 'home',
+  GAME = 'game',
   LOGIN = 'login',
   NOT_FOUND = 'not-found',
 }
-
-// Routes that could be reached only if the user is not logged in
-const authFreeRoutes = [
-  ERouteName.LOGIN,
-];
 
 export const router = createRouter({
   history: createWebHistory('/'),
@@ -24,12 +22,15 @@ export const router = createRouter({
       children: [
         {
           path: '',
-          name: ERouteName.HOME,
+          name: ERouteName.GAME,
           components: {
             content: () => import('@/page/game/game.vue'),
           },
         },
       ],
+      meta: {
+        authRequired: true,
+      },
     },
     {
       path: '/login',
@@ -43,6 +44,9 @@ export const router = createRouter({
           },
         },
       ],
+      meta: {
+        noAuthRequired: true,
+      },
     },
     {
       path: '/:pathMatch(.*)*',
@@ -58,4 +62,25 @@ export const router = createRouter({
       ],
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  const authRequired = to.matched.some((record) => record.meta.authRequired);
+  const noAuthRequired = to.matched.some((record) => record.meta.noAuthRequired);
+
+  const {
+    user,
+  } = useUserStore();
+
+  if (authRequired && !user) {
+    next({
+      path: '/login',
+    });
+  } else if (noAuthRequired && user) {
+    next({
+      path: '/',
+    });
+  } else {
+    next();
+  }
 });

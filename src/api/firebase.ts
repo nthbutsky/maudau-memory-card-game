@@ -72,6 +72,9 @@ export default function useFirebase() {
       // Sign-out successful.
       setUser(null);
       setSignedInStatus(false);
+      router.push({
+        name: ERouteName.LOGIN,
+      });
     }).catch((error) => {
       // An error happened.
       console.error(error);

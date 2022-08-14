@@ -14,7 +14,7 @@ export enum ERouteName {
 }
 
 export const router = createRouter({
-  history: createWebHistory('/'),
+  history: createWebHistory('/maudau-memory-card-game/'),
   routes: [
     {
       path: '/',

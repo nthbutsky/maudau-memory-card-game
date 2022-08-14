@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Login</h1>
     <div id="firebaseui-auth-container" />
     <div id="loader">
       Loading...

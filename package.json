@@ -16,6 +16,7 @@
   "dependencies": {
     "@convidera-team/eslint-config-vue3-convidera": "^1.2.0",
     "@convidera-team/stylelint-config-vue-convidera": "^3.2.0",
+    "@fontsource/nunito-sans": "^4.5.9",
     "@types/node": "^18.7.2",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",

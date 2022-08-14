@@ -5,7 +5,6 @@ import {
 import {
   createPinia,
 } from 'pinia';
-import './style.css';
 import firebase from 'firebase/compat/app';
 import App from './App.vue';
 import {
@@ -15,6 +14,7 @@ import {
   firebaseConfig,
 } from '@/api/firebase';
 import 'firebaseui/dist/firebaseui.css';
+import '@fontsource/nunito-sans'; // Defaults to weight 400.
 
 const pinia = createPinia();
 pinia.use(({

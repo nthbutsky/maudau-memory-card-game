@@ -7,7 +7,7 @@ import postcssPresentEnv from 'postcss-preset-env';
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
-  base: '/maudau-memory-card-game/',
+  base: '',
   publicPath: process.env.NODE_ENV === 'production' ? '/maudau-memory-card-game/' : '/',
   plugins: [
     vue(),

@@ -34,7 +34,7 @@
     </div>
     <div class="game__container">
       <div
-        v-for="card in cardList"
+        v-for="card, index in cardList"
         :key="card.id"
         class="game__card"
         :data-identifier="card.dataIdentifier"
@@ -45,7 +45,7 @@
       >
         <img
           class="game__card-front"
-          :src="'/image/' + card.name + '.png'"
+          :src="imageArray[index]"
           alt=""
         >
         <img
@@ -80,7 +80,9 @@ const totalTime = ref({
 });
 let timerId = null as null | ReturnType<typeof setTimeout>;
 
-const imageArray = Object.keys(import.meta.glob('@/assets/image/*.png'));
+const imageArray = computed(() => {
+  return Object.keys(import.meta.glob('@/assets/image/*.png'));
+});
 
 const time = computed(() => {
   return {
@@ -152,7 +154,7 @@ function createCardList() {
   const resultArray: {id: string, name: string, isFlipped: boolean, dataIdentifier: number}[] = [];
   for (let i = 0; i < 2; i += 1) {
     let index = 0;
-    imageArray.forEach((element) => {
+    imageArray.value.forEach((element) => {
       const fileName = element.slice(-8, -4);
       resultArray.push({
         // eslint-disable-next-line no-restricted-globals

@@ -34,7 +34,7 @@
     </div>
     <div class="game__container">
       <div
-        v-for="card, index in cardList"
+        v-for="card in cardList"
         :key="card.id"
         class="game__card"
         :data-identifier="card.dataIdentifier"
@@ -45,7 +45,7 @@
       >
         <img
           class="game__card-front"
-          :src="imageArray[index]"
+          :src="getImageUrl(card.name)"
           alt=""
         >
         <img
@@ -79,6 +79,10 @@ const totalTime = ref({
   sec: 0,
 });
 let timerId = null as null | ReturnType<typeof setTimeout>;
+
+function getImageUrl(name: string) {
+  return new URL(`/image/${name}.png`, import.meta.url).href;
+}
 
 const imageArray = computed(() => {
   return Object.keys(import.meta.glob('@/assets/image/*.png'));

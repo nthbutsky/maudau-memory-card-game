@@ -45,7 +45,7 @@
       >
         <img
           class="game__card-front"
-          :src="card.path"
+          :src="'/image/' + card.name + '.png'"
           alt=""
         >
         <img
@@ -80,7 +80,7 @@ const totalTime = ref({
 });
 let timerId = null as null | ReturnType<typeof setTimeout>;
 
-const imageArray = Object.keys(import.meta.glob('/src/assets/image/*.png'));
+const imageArray = Object.keys(import.meta.glob('@/assets/image/*.png'));
 
 const time = computed(() => {
   return {
@@ -149,14 +149,15 @@ function shuffleCards(array: any) {
 }
 
 function createCardList() {
-  const resultArray: {id: string, path: string, isFlipped: boolean, dataIdentifier: number}[] = [];
+  const resultArray: {id: string, name: string, isFlipped: boolean, dataIdentifier: number}[] = [];
   for (let i = 0; i < 2; i += 1) {
     let index = 0;
     imageArray.forEach((element) => {
+      const fileName = element.slice(-8, -4);
       resultArray.push({
         // eslint-disable-next-line no-restricted-globals
         id: self.crypto.randomUUID(),
-        path: element,
+        name: fileName,
         isFlipped: false,
         dataIdentifier: index,
       });

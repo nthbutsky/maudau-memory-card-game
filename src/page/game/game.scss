@@ -5,7 +5,8 @@
   &__dashboard {
     position: absolute;
     bottom: 0;
-    width: 660px;
+    max-width: 660px;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -31,11 +32,12 @@
   }
 
   &__container {
-    width: 660px;
-    height: 660px;
+    max-width: 660px;
+    max-height: 660px;
     margin: auto;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     perspective: 1000px;
   }
 

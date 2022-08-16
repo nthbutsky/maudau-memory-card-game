@@ -80,7 +80,7 @@ const totalTime = ref({
 });
 let timerId = null as null | ReturnType<typeof setTimeout>;
 
-const imageArray = Object.keys(import.meta.glob('@/assets/image/*.png'));
+const imageArray = Object.keys(import.meta.glob('/src/assets/image/*.png'));
 
 const time = computed(() => {
   return {

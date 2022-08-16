@@ -39,17 +39,14 @@ export default function useFirebase() {
         provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       },
       {
-        provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-      },
-      {
-        provider: firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-      },
-      {
         provider: firebase.auth.GithubAuthProvider.PROVIDER_ID,
       },
       {
         provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
         signInMethod: firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD,
+      },
+      {
+        provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
       },
     ],
     callbacks: {

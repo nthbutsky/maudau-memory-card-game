@@ -80,10 +80,6 @@ const totalTime = ref({
 });
 let timerId = null as null | ReturnType<typeof setTimeout>;
 
-function getImageUrl(name: string) {
-  return new URL(`/assets/image/${name}.png`, import.meta.url).href;
-}
-
 const imageArray = computed(() => {
   return Object.keys(import.meta.glob('@/assets/image/*.png'));
 });
@@ -254,6 +250,10 @@ function flipCard(card: any) {
   } else {
     unflipCards();
   }
+}
+
+function getImageUrl(name: string) {
+  return new URL(`/src/assets/image/${name}.png`, import.meta.url).href;
 }
 
 onMounted(() => {

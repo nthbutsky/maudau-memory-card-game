@@ -1,0 +1,42 @@
+/*
+Example usage
+@include media.media(mobile, tablet, desktop) {
+  ...styles
+}
+*/
+
+@use '@/style/constant/breakpoint.scss';
+
+$screen-type: (
+  mobile: (
+    to: breakpoint.$tablet - 1,
+  ),
+  tablet: (
+    from: breakpoint.$tablet,
+    to: breakpoint.$desktop - 1,
+  ),
+  desktop: (
+    from: breakpoint.$desktop,
+  ),
+);
+
+@mixin media($keys...) {
+  @each $key in $keys {
+    @if map-get(map-get($screen-type, $key), 'from') and map-get(map-get($screen-type, $key), 'to') {
+      // stylelint-disable-next-line max-line-length
+      @media screen and (min-width: map-get(map-get($screen-type, $key), 'from')) and (max-width: map-get(map-get($screen-type, $key), 'to')) {
+        @content;
+      }
+    } @else if map-get(map-get($screen-type, $key), 'from') {
+      @media screen and (min-width: map-get(map-get($screen-type, $key), 'from')) {
+        @content;
+      }
+    } @else if map-get(map-get($screen-type, $key), 'to') {
+      @media screen and (max-width: map-get(map-get($screen-type, $key), 'to')) {
+        @content;
+      }
+    } @else {
+      @content;
+    }
+  }
+}

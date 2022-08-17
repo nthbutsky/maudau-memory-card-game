@@ -1,25 +1,34 @@
 <template>
   <div class="game">
+    <div class="game__confetti-wrapper">
+      <confetti-explosion
+        v-if="isFinished"
+        class="game__confetti"
+        :particle-count="200"
+        :force="0.3"
+        :colors="['#371F5E',
+                  '#A4FFB8',
+                  '#FFFFFF',
+                  '#91C4F2',
+                  '#8CA0D7',
+                  '#9D79BC']"
+      />
+    </div>
     <div class="game__dashboard">
       <div class="game__turns-wrapper">
-        <span class="game__turns">Turns :
-          <span
-            class="game__badge"
-            :class="isFinished ?
-              'game__badge_success' :
-              'game__badge_light'"
-          >{{ turns }}</span>
+        <span
+          class="game__turns"
+          :class="{'game__turns_finish': isFinished}"
+        >
+          Turns : {{ turns }}
         </span>
       </div>
       <div class="game__time-wrapper">
-        <span class="game__time">Total Time :
-          <span
-            class="game__badge"
-            :class="isFinished ?
-              'game__badge_success' :
-              'game__badge_light'"
-          >{{ time.min() }} : {{ time.sec() }}
-          </span>
+        <span
+          class="game__time"
+          :class="{'game__time_finish': isFinished}"
+        >
+          Total Time : {{ time.min() }} : {{ time.sec() }}
         </span>
       </div>
       <div class="game__reset-button-wrapper">
@@ -39,7 +48,7 @@
         class="game__card"
         :data-identifier="card.dataIdentifier"
         :class="{
-          'game__card-flip': card.isFlipped,
+          'game__card_flip': card.isFlipped,
         }"
         @click="isLocked ? null : flipCard(card)"
       >
@@ -60,8 +69,9 @@
 
 <script lang="ts" setup>
 import {
-  onMounted, ref, computed,
+  onMounted, ref, computed, onBeforeUnmount,
 } from 'vue';
+import ConfettiExplosion from 'vue-confetti-explosion';
 
 const INTERVAL = 1000;
 
@@ -188,6 +198,7 @@ function resetGame() {
   turns.value = 0;
   totalTime.value.sec = 0;
   totalTime.value.min = 0;
+  isStarted.value = false;
 }
 
 function unflipCards() {
@@ -260,8 +271,15 @@ onMounted(() => {
   createCardList();
 });
 
+onBeforeUnmount(() => {
+  if (timerId) {
+    clearTimeout(timerId);
+  }
+});
+
 </script>
 
 <style lang="scss" scoped>
-@use './game.scss'
+@use './game.scss';
+@use '@/style/constant/color.scss';
 </style>

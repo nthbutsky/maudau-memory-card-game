@@ -3,12 +3,7 @@
 
 .game {
   height: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
   position: relative;
 
@@ -16,8 +11,6 @@
     position: absolute;
     top: 0;
     left: 50%;
-    -webkit-transform: translate(-50%);
-    -ms-transform: translate(-50%);
     transform: translate(-50%);
     z-index: 1000;
   }
@@ -25,14 +18,8 @@
   &__dashboard {
     max-width: 660px;
     width: 100%;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
     justify-content: space-between;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-bottom: 50px;
     color: color.$color-1;
@@ -56,18 +43,7 @@
   }
 
   &__time_finish {
-    -webkit-animation: blink 1s ease-in-out alternate infinite;
     animation: blink 1s ease-in-out alternate infinite;
-
-    @-webkit-keyframes blink {
-      0% {
-        background-color: color.$color-6;
-      }
-
-      100% {
-        background-color: color.$color-2;
-      }
-    }
 
     @keyframes blink {
       0% {
@@ -82,8 +58,6 @@
 
   &__reset-button {
     cursor: pointer;
-    -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
 
     &:hover {
@@ -97,34 +71,23 @@
     max-width: 660px;
     max-height: 660px;
     margin: auto;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center;
-    -webkit-perspective: 1000px;
-    perspective: 1000px;
+    // perspective: 1000px;
   }
 
   &__card {
     width: 100px;
     height: 100px;
     margin: 5px;
-    -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
-    -webkit-transition: .5s;
-    -o-transition: .5s;
     transition: .5s;
     cursor: pointer;
     border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 5px 0px color.$color-1;
     box-shadow: 0px 0px 5px 0px color.$color-1;
 
     &_flip {
-      -webkit-transform: rotateY(180deg);
       transform: rotateY(180deg);
     }
 
@@ -141,27 +104,21 @@
     height: 100%;
     padding: 5px;
     border-radius: 5px;
-    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }
 
   &__card-front {
-    -webkit-transform: rotateY(180deg);
     transform: rotateY(180deg);
     background-color: color.$color-4;
     cursor: default;
   }
 
   &__card-back {
-    -webkit-transition: .5s;
-    -o-transition: .5s;
     transition: .5s;
     padding: 15px;
     background: color.$color-1;
 
     &:hover {
-      -webkit-transform: scale(1.1);
-      -ms-transform: scale(1.1);
       transform: scale(1.1);
     }
   }

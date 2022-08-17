@@ -1,7 +1,10 @@
 <template>
   <div class="layout-default">
     <header class="layout-default__header">
-      <a href="https://maudau.com.ua/" title="MAUDAU">
+      <a
+        href="https://maudau.com.ua/"
+        title="MAUDAU"
+      >
         <img
           class="layout-default__logo"
           src="@/assets/logo/long-green.svg"
@@ -17,24 +20,6 @@
         />
       </div>
     </main>
-    <footer class="layout-default__footer">
-      <img
-        src=""
-        alt=""
-      >
-      <img
-        src=""
-        alt=""
-      >
-      <img
-        src=""
-        alt=""
-      >
-      <img
-        src=""
-        alt=""
-      >
-    </footer>
   </div>
 </template>
 

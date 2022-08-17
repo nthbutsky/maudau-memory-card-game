@@ -14,6 +14,29 @@
                   '#9D79BC']"
       />
     </div>
+    <div class="game__container">
+      <div
+        v-for="card in cardList"
+        :key="card.id"
+        class="game__card"
+        :data-identifier="card.dataIdentifier"
+        :class="{
+          'game__card_flip': card.isFlipped,
+        }"
+        @click="isLocked ? null : flipCard(card)"
+      >
+        <img
+          class="game__card-front"
+          :src="getImageUrl(card.name)"
+          alt=""
+        >
+        <img
+          class="game__card-back"
+          src="@/assets/logo/short-green.svg"
+          alt=""
+        >
+      </div>
+    </div>
     <div class="game__dashboard">
       <div class="game__turns-wrapper">
         <span
@@ -39,29 +62,6 @@
         >
           Restart
         </button>
-      </div>
-    </div>
-    <div class="game__container">
-      <div
-        v-for="card in cardList"
-        :key="card.id"
-        class="game__card"
-        :data-identifier="card.dataIdentifier"
-        :class="{
-          'game__card_flip': card.isFlipped,
-        }"
-        @click="isLocked ? null : flipCard(card)"
-      >
-        <img
-          class="game__card-front"
-          :src="getImageUrl(card.name)"
-          alt=""
-        >
-        <img
-          class="game__card-back"
-          src="@/assets/logo/short-green.svg"
-          alt=""
-        >
       </div>
     </div>
   </div>

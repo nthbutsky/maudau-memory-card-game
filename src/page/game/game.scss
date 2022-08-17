@@ -16,13 +16,12 @@
   }
 
   &__dashboard {
-    position: fixed;
     max-width: 660px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding-bottom: 50px;
     color: color.$color-1;
     font-size: 1.5rem;
     font-weight: 600;
@@ -119,7 +118,7 @@
     padding: 15px;
     background: color.$color-1;
 
-    &:active {
+    &:focus {
       visibility: hidden;
     }
 

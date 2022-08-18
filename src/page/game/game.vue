@@ -1,9 +1,41 @@
 <template>
   <div class="game">
+    <div
+      class="game__dashboard"
+    >
+      <div class="game__turns-wrapper">
+        <span
+          class="game__turns"
+          :class="{'game__turns_finish': !isGameStarted && disabledCardPairsCount === NUMBER_OF_CARDS}"
+        >
+          Turns: {{ turns }}
+        </span>
+      </div>
+      <div class="game__time-wrapper">
+        <span
+          class="game__time"
+          :class="{'game__time_finish': !isGameStarted && disabledCardPairsCount === NUMBER_OF_CARDS}"
+        >
+          Time: {{ time.min() }} : {{ time.sec() }}
+        </span>
+      </div>
+      <div
+        v-if="!isGameStarted && disabledCardPairsCount === NUMBER_OF_CARDS"
+        class="game__reset-button-wrapper"
+      >
+        <button
+          class="game__reset-button"
+          @click="resetGame"
+        >
+          Restart
+        </button>
+      </div>
+    </div>
     <div class="game__confetti-wrapper">
       <confetti-explosion
-        v-if="isFinished"
+        v-if="!isGameStarted && disabledCardPairsCount === NUMBER_OF_CARDS"
         class="game__confetti"
+        :stage-height="1000"
         :particle-count="200"
         :force="0.3"
         :colors="['#371F5E',
@@ -23,7 +55,7 @@
         :class="{
           'game__card_flip': card.isFlipped,
         }"
-        @click="isLocked ? null : flipCard(card)"
+        @click="card.isFlipped && card.isGuessed ? null : flipCard(card)"
       >
         <img
           class="game__card-front"
@@ -37,33 +69,6 @@
         >
       </div>
     </div>
-    <div class="game__dashboard">
-      <div class="game__turns-wrapper">
-        <span
-          class="game__turns"
-          :class="{'game__turns_finish': isFinished}"
-        >
-          Turns : {{ turns }}
-        </span>
-      </div>
-      <div class="game__time-wrapper">
-        <span
-          class="game__time"
-          :class="{'game__time_finish': isFinished}"
-        >
-          Total Time : {{ time.min() }} : {{ time.sec() }}
-        </span>
-      </div>
-      <div class="game__reset-button-wrapper">
-        <button
-          class="game__reset-button"
-          :disabled="!isStarted"
-          @click="resetGame"
-        >
-          Restart
-        </button>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -74,6 +79,7 @@ import {
 import ConfettiExplosion from 'vue-confetti-explosion';
 
 const INTERVAL = 1000;
+const NUMBER_OF_CARDS = 18;
 
 const cardList = ref();
 const disabledCardPairsCount = ref(0);
@@ -81,8 +87,7 @@ const isFlipped = ref(false);
 const isLocked = ref(false);
 const firstCard = ref();
 const secondCard = ref();
-const isStarted = ref(false);
-const isFinished = ref(false);
+const isGameStarted = ref(false);
 const turns = ref(0);
 const totalTime = ref({
   min: 0,
@@ -124,11 +129,11 @@ function tick() {
 function startGame() {
   tick();
   timerId = setInterval(tick, INTERVAL);
-  isStarted.value = true;
+  isGameStarted.value = true;
 }
 
 function finishGame() {
-  isFinished.value = true;
+  isGameStarted.value = false;
   isLocked.value = true;
   if (timerId) {
     clearInterval(timerId);
@@ -161,7 +166,7 @@ function shuffleCards(array: any) {
 }
 
 function createCardList() {
-  const resultArray: {id: string, name: string, isFlipped: boolean, dataIdentifier: number}[] = [];
+  const resultArray: {id: string, name: string, isFlipped: boolean, dataIdentifier: number, isGuessed: boolean}[] = [];
   for (let i = 0; i < 2; i += 1) {
     let index = 0;
     imageArray.value.forEach((element) => {
@@ -172,6 +177,7 @@ function createCardList() {
         name: fileName,
         isFlipped: false,
         dataIdentifier: index,
+        isGuessed: false,
       });
       index += 1;
     });
@@ -198,7 +204,8 @@ function resetGame() {
   turns.value = 0;
   totalTime.value.sec = 0;
   totalTime.value.min = 0;
-  isStarted.value = false;
+  isGameStarted.value = false;
+  disabledCardPairsCount.value = 0;
 }
 
 function unflipCards() {
@@ -219,15 +226,9 @@ function unflipCards() {
 }
 
 function flipCard(card: any) {
-  if (!isStarted.value) {
+  if (!isGameStarted.value) {
     startGame();
   }
-
-  cardList.value.forEach((item: any) => {
-    if (item.id === card.id) {
-      item.isFlipped = true;
-    }
-  });
 
   if (isLocked.value) {
     return;
@@ -236,6 +237,12 @@ function flipCard(card: any) {
   if (card === firstCard.value) {
     return;
   }
+
+  cardList.value.forEach((item: any) => {
+    if (item.id === card.id) {
+      item.isFlipped = true;
+    }
+  });
 
   // first click
   if (!isFlipped.value) {
@@ -253,9 +260,19 @@ function flipCard(card: any) {
   if (isMatch) {
     isLocked.value = true;
     disabledCardPairsCount.value += 1;
+    cardList.value.forEach((item: any) => {
+      if (item.id === firstCard.value.id) {
+        item.isGuessed = true;
+        item.isFlipped = true;
+      }
+      if (item.id === secondCard.value.id) {
+        item.isGuessed = true;
+        item.isFlipped = true;
+      }
+    });
     resetCards();
 
-    if (disabledCardPairsCount.value === 18) {
+    if (disabledCardPairsCount.value === NUMBER_OF_CARDS) {
       finishGame();
     }
   } else {

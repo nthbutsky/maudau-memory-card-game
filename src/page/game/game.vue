@@ -6,7 +6,7 @@
       <div class="game__turns-wrapper">
         <span
           class="game__turns"
-          :class="{'game__turns_finish': !isGameStarted && disabledCardPairsCount === NUMBER_OF_CARDS}"
+          :class="{'game__turns_finish': !isGameStarted && disabledCardPairsCount === NUMBER_OF_PAIRS}"
         >
           Turns: {{ turns }}
         </span>
@@ -14,13 +14,13 @@
       <div class="game__time-wrapper">
         <span
           class="game__time"
-          :class="{'game__time_finish': !isGameStarted && disabledCardPairsCount === NUMBER_OF_CARDS}"
+          :class="{'game__time_finish': !isGameStarted && disabledCardPairsCount === NUMBER_OF_PAIRS}"
         >
           Time: {{ time.min() }} : {{ time.sec() }}
         </span>
       </div>
       <div
-        v-if="!isGameStarted && disabledCardPairsCount === NUMBER_OF_CARDS"
+        v-if="!isGameStarted && disabledCardPairsCount === NUMBER_OF_PAIRS"
         class="game__reset-button-wrapper"
       >
         <button
@@ -33,7 +33,7 @@
     </div>
     <div class="game__confetti-wrapper">
       <confetti-explosion
-        v-if="!isGameStarted && disabledCardPairsCount === NUMBER_OF_CARDS"
+        v-if="!isGameStarted && disabledCardPairsCount === NUMBER_OF_PAIRS"
         class="game__confetti"
         :stage-height="1000"
         :particle-count="200"
@@ -51,7 +51,6 @@
         v-for="card in cardList"
         :key="card.id"
         class="game__card"
-        :data-identifier="card.dataIdentifier"
         :class="{
           'game__card_flip': card.isFlipped,
         }"
@@ -79,7 +78,8 @@ import {
 import ConfettiExplosion from 'vue-confetti-explosion';
 
 const INTERVAL = 1000;
-const NUMBER_OF_CARDS = 18;
+const NUMBER_OF_CARDS = 16;
+const NUMBER_OF_PAIRS = NUMBER_OF_CARDS / 2;
 
 const cardList = ref();
 const disabledCardPairsCount = ref(0);
@@ -166,26 +166,31 @@ function shuffleCards(array: any) {
 }
 
 function createCardList() {
-  const resultArray: {id: string, name: string, isFlipped: boolean, dataIdentifier: number, isGuessed: boolean}[] = [];
-  for (let i = 0; i < 2; i += 1) {
-    let index = 0;
-    imageArray.value.forEach((element) => {
-      const fileName = element.slice(-8, -4);
-      resultArray.push({
-        // eslint-disable-next-line no-restricted-globals
-        id: self.crypto.randomUUID(),
-        name: fileName,
-        isFlipped: false,
-        dataIdentifier: index,
-        isGuessed: false,
-      });
-      index += 1;
+  const resultArray: {id: string, name: string, isFlipped: boolean, isGuessed: boolean}[] = [];
+  imageArray.value.forEach((element) => {
+    const fileName = element.slice(-8, -4);
+    resultArray.push({
+      id: '',
+      name: fileName,
+      isFlipped: false,
+      isGuessed: false,
     });
-  }
+  });
 
   const shuffledArray = shuffleCards(resultArray);
+  const slicedArray = shuffledArray.slice(-NUMBER_OF_PAIRS);
+  const slicedArrayClone = JSON.parse(JSON.stringify(slicedArray));
+  const mergedArray = [
+    ...slicedArray,
+    ...slicedArrayClone,
+  ];
 
-  cardList.value = shuffledArray;
+  mergedArray.forEach((element) => {
+    // eslint-disable-next-line no-restricted-globals
+    element.id = self.crypto.randomUUID();
+  });
+
+  cardList.value = mergedArray;
 }
 
 function resetCards() {
@@ -256,7 +261,7 @@ function flipCard(card: any) {
   secondCard.value = card;
   turns.value += 1;
 
-  const isMatch = firstCard.value.dataIdentifier === secondCard.value.dataIdentifier;
+  const isMatch = firstCard.value.name === secondCard.value.name;
   if (isMatch) {
     isLocked.value = true;
     disabledCardPairsCount.value += 1;
@@ -272,7 +277,7 @@ function flipCard(card: any) {
     });
     resetCards();
 
-    if (disabledCardPairsCount.value === NUMBER_OF_CARDS) {
+    if (disabledCardPairsCount.value === NUMBER_OF_PAIRS) {
       finishGame();
     }
   } else {

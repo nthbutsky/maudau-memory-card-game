@@ -1,0 +1,1 @@
+import{g as a,m as n,o as s,a as i,b as r,e}from"./index.e1357aea.js";const c=e("div",{id:"firebaseui-auth-container"},null,-1),d=e("div",{id:"loader"}," Loading... ",-1),u=[c,d],p=a({__name:"login",setup(_){const{ui:o,uiConfig:t}=n();return s(()=>{o.start("#firebaseui-auth-container",t)}),(l,f)=>(i(),r("div",null,u))}});export{p as default};
